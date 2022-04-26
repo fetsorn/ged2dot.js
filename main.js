@@ -218,17 +218,18 @@ class GedcomImport {
           // if no date is known, show dash
           if (rest === "") {
             date = "-"
-            // if the date is "YYYY MMM DD", parse it
-          } else if (rest.length === 11) {
-            let year = rest.slice(0,4)
+            // if the date is "DD MMM YYYY" or "D MMM YYYY", parse it
+          } else if ((/^[0-9][0-9]? [A-Z]{3} [0-9]{4}/).test(rest)) {
+            const pad = num => (num < 10 ? '0' : '') + num
+            let parts = rest.split(" ")
+            let day = pad(parts[0])
             var months = [
               'JAN', 'FEB', 'MAR', 'APR',
               'MAY', 'JUN', 'JUL', 'AUG',
               'SEP', 'OCT', 'NOV', 'DEC'
             ];
-            const pad = num => (num < 10 ? '0' : '') + num
-            let month = pad(months.indexOf(rest.slice(5,8)) + 1)
-            let day = rest.slice(9)
+            let month = pad(months.indexOf(parts[1]) + 1)
+            let year = parts[2]
             date = `${year}-${month}-${day}`
             // else presume the date is YYYY or YYYY-MM-DD
           } else {
