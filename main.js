@@ -215,21 +215,31 @@ class GedcomImport {
           // remove "DATE " prefix
           rest = rest.slice(5)
           var date = ""
+
+          const pad = num => (num.length === 1 ? `0${num}` : num)
+          const months = [
+            'JAN', 'FEB', 'MAR', 'APR',
+            'MAY', 'JUN', 'JUL', 'AUG',
+            'SEP', 'OCT', 'NOV', 'DEC'
+          ];
           // if no date is known, show dash
           if (rest === "") {
             date = "-"
             // if the date is "DD MMM YYYY" or "D MMM YYYY", parse it
           } else if ((/^[0-9][0-9]? [A-Z]{3} [0-9]{4}/).test(rest)) {
-            const pad = num => (num < 10 ? '0' : '') + num
             let parts = rest.split(" ")
             let day = pad(parts[0])
-            var months = [
-              'JAN', 'FEB', 'MAR', 'APR',
-              'MAY', 'JUN', 'JUL', 'AUG',
-              'SEP', 'OCT', 'NOV', 'DEC'
-            ];
-            let month = pad(months.indexOf(parts[1]) + 1)
+            let _month = months.indexOf(parts[1]) + 1
+            let month = pad(_month.toString())
             let year = parts[2]
+            date = `${year}-${month}-${day}`
+            // if the date is "YYYY MMM DD" or "YYYY MMM D", parse it
+          } else if ((/^[0-9]{4} [A-Z]{3} [0-9][0-9]?/).test(rest)) {
+            let parts = rest.split(" ")
+            let year = parts[0]
+            let _month = months.indexOf(parts[1]) + 1
+            let month = pad(_month.toString())
+            let day = pad(parts[2])
             date = `${year}-${month}-${day}`
             // else presume the date is YYYY or YYYY-MM-DD
           } else {
