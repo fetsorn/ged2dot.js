@@ -49,7 +49,7 @@ class DotExport {
       }
       stream += node.dict["identifier"] + " [shape=circle\n"
       stream += "style=filled, color=black, fillcolor=white\n"
-      stream += "href=\"javascript:setRoot('" + node.dict["identifier"] + "')\"\n"
+      stream += "href=\"javascript:ged2dot_setFamilyID('" + node.dict["identifier"] + "')\"\n"
       stream += "label=<" + label + ">, tooltip=\"" + node.dict["identifier"] + "\"];\n"
     }
     stream += "\n"
@@ -148,7 +148,7 @@ class GedcomImport {
         this.individual.dict["sex"] = tokens[1]
       }
     } else if (line_lead_token === "REFN" && this.individual) {
-      this.individual.dict["hostname"] = line.slice(5).trim()
+      this.individual.dict["refn"] = line.slice(5).trim()
     } else if (line_lead_token === "_UID" && this.individual) {
       this.individual.dict["uuid"] = line.slice(5).trim()
     } else if (line_lead_token === "NAME" && this.individual) {
@@ -268,7 +268,7 @@ class Individual {
     this.dict["famc_id"] = ""
     this.dict["forename"] = ""
     this.dict["surname"] = ""
-    this.dict["hostname"] = ""
+    this.dict["refn"] = ""
     this.dict["uuid"] = ""
     this.dict["sex"] = ""
     this.famc = ""
@@ -302,10 +302,10 @@ class Individual {
   get_label(name_order) {
     var label = "<table border=\"0\" cellborder=\"0\"><tr><td>"
     var href
-    if (this.dict["hostname"] !== "") {
-      href = "href=\"q?hostname=" + this.dict["hostname"] + "\""
+    if (this.dict["refn"] !== "") {
+      href = "href=\"javascript:ged2dot_setPersonREFN('" + this.dict["refn"] + "')\""
     } else if (this.dict["uuid"] !== "") {
-      href = "href=\"q?hostname=" + this.dict["uuid"] + "\""
+      href = "href=\"javascript:ged2dot_setPersonUUID('" + this.dict["uuid"] + "')\""
     } else {
       href = ""
     }
