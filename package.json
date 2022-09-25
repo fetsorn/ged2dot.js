@@ -3,6 +3,20 @@
   "description": "ged2dot.js: convert GEDCOM to GraphViz dot notation",
   "version": "0.2.0",
   "author": "Anton Davydov <git@fetsorn.website>",
+  "type": "module",
   "license": "MIT",
-  "main": "main.js"
+  "main": "src/index.js",
+  "files": [
+    "src/main.js",
+    "src/index.js"
+  ],
+  "scripts": {
+    "lint": "eslint --fix src/ tests/",
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.0.3",
+    "eslint": "^8.23.0",
+    "jest": "^27.5.1"
+  }
 }
